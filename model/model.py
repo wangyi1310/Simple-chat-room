@@ -43,16 +43,20 @@ class Mongo:
         coll=db['user_state']
         try:
             coll.insert({'user_name':user_name,'clientfd':clientfd})
+            return True
         except:
             print ("insert  user_state error")
+            return False
 
     def insert_user_info(self,user_info):
         db=serlf.mongo['ts']
         coll=db['user_info']
         try:
             coll.insert(user_info)
+            return True
         except:
             print ("insert user_info failuer")
+            return False
 
 
     def delete_user_state(self,user_name):
