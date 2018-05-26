@@ -14,7 +14,7 @@ class ExitView(view.View):
         """
 	self.clientfd=user_info['clientfd']
 	results = self.mongo.find_user_info(self.clientfd)
-	for  item in  results:
+	for item in results:
 		if item['clientfd'] ==  self.clientfd:
 			user_name=item['user_name']
 			self.mongo.delete_user_state(user_name)
