@@ -42,6 +42,6 @@ class ChatView(view.View):
 		message = "CHAT SEND SUCCESS"
 	else:
 		message = "CHAT SEND FAILUER "
-		response_info={'code':self.code,'message':message}
-		data=json.dumps(response_info)
-		s.sock_dict[self.clientfd].send(data)
+	response_info={'code':self.code,'message':message}
+	data=json.dumps(response_info)
+	s.sock_dict[self.clientfd].send(data)
