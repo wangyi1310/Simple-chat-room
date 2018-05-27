@@ -16,13 +16,18 @@ class Mongo:
             return False
 
 
-    def find_user_state(self,user_name):
+    def find_user_state_name(self,user_name):
         db=self.mongo['ts']
         coll=db['user_state']
         #coll.insert({'user_name':user_name})
         resluts =coll.find({'user_name':user_name})
         return resluts
-
+	def find_user_state_clifd(self,clifd):
+        db=self.mongo['ts']
+        coll=db['user_state']
+        #coll.insert({'user_name':user_name})
+        resluts =coll.find({'clientfd':clifd})
+        return resluts
 
     def find_delay_message(self,user_name):
         db = self.mongo.ts
