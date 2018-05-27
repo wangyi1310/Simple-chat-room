@@ -19,22 +19,38 @@ class Mongo:
     def find_user_state_name(self,user_name):
         db=self.mongo['ts']
         coll=db['user_state']
-        #coll.insert({'user_name':user_name})
         resluts =coll.find({'user_name':user_name})
         return resluts
-	def find_user_state_clifd(self,clifd):
+
+
+    def find_user_state_clifd(self,clifd):
         db=self.mongo['ts']
         coll=db['user_state']
-        #coll.insert({'user_name':user_name})
         resluts =coll.find({'clientfd':clifd})
         return resluts
 
+
     def find_delay_message(self,user_name):
-        db = self.mongo.ts
+        db = self.mongo['ts']
         coll = db['delay_message']
-        results = coll.find({'user_name': user_name})
+        results = coll.find({'to_user_name': user_name})
         return results
 
+
+    def insert_delay_message(self,message):
+        db=self.mongo['ts']
+        coll = db['delay_message']
+        try:
+            coll.insert(message)
+            return True
+        except:
+            return False
+
+
+    def delete_delay_message(self,user_name):
+        db=self.mongo['ts']
+        coll=db['delay_message']
+        coll.remove({'to_user_name':user_name})
 
     def find_user_info(self,user_name):
         db=self.mongo['ts']
@@ -52,7 +68,7 @@ class Mongo:
             print ("insert  user_state error")
 
     def insert_user_info(self,user_info):
-        db=serlf.mongo['ts']
+        db=self.mongo['ts']
         coll=db['user_info']
         try:
             coll.insert(user_info)
@@ -60,8 +76,13 @@ class Mongo:
             print ("insert user_info failuer")
 
 
-    def delete_user_state(self,user_name):
+    def delete_user_state_name(self,user_name):
         db=self.mongo['ts']
         coll=db['user_state']
         coll.remove({'user_name',user_name})
 
+
+    def delete_user_state_clifd(self,clifd):
+        db=self.mongo['ts']
+        coll=db['user_state']
+        coll.remove({'clientfd':clifd})

@@ -3,7 +3,7 @@
 定义view父类，所有不同的模块都派生这个父类
 '''
 import sys
-sys.path.append('../../chat')
+sys.path.append('../../Simple-chat-room')
 import s
 from model.model import Mongo
 class View(object):
@@ -15,7 +15,13 @@ class View(object):
         self.state=True
         self.clientfd=-1
         self.code=0
-    def process(self):
+
+
+    def process(self,message):
         pass
+
+
     def response(self):
         pass
+
+

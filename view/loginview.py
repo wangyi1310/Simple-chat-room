@@ -2,12 +2,14 @@
 import view
 import sys
 import json
+import s
 class LoginView(view.View):
     def __init__(self):
         '''
         连接数据库
         '''
-        super().__init__()
+        super(LoginView,self).__init__()
+        self.delay_message=list()
 
 
     def process(self,message):
@@ -18,12 +20,19 @@ class LoginView(view.View):
         """
         user_info=message
         self.clientfd=user_info['clientfd']
-        user_data=self.mongo.find_user_info(user_info['username'])
-        for item in user_data:
-            if item['password'] == user_info['passowrd']:
+        resluts=self.mongo.find_user_info(user_info['user_name'])
+        if resluts.count():
+            if resluts[0]['password'] == user_info['password']:
                 self.code = 0
                 self.state = True
-                self.mongo.insert_user_state(user_info['name'],user_info['clientfd'])
+                self.mongo.insert_user_state(user_info['user_name'],user_info['clientfd'])
+                results=self.mongo.find_delay_message(user_info['user_name'])
+                if results.count():
+                    for item in results:
+                        item.pop('_id')
+                        item.pop('to_user_name')
+                        self.delay_message.append(item) 
+                    self.mongo.delete_delay_message(user_info['user_name'])
                 return
             else:
                 self.code=1
@@ -43,6 +52,8 @@ class LoginView(view.View):
         else:
             message =  "LOGIN FAILUER"
         repsonse_info = {'code':self.code,'message':message}
+        repsonse_info['delay_message'] =self.delay_message
+        print repsonse_info
         data=json.dumps(repsonse_info)
         s.sock_dict[self.clientfd].send(data)
 
